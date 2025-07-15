@@ -68,6 +68,8 @@ function Login()
                         onChange={ handleChange }
                     />
                     <FormButton label="Sign In" />
+                    {error && <p className="text-red-500 text-center">{error}</p>}
+                    {success && <p className="text-green-500 text-center">{success}</p>}
                 </form>
                 <div className="mt-4 text-gray-500">or sign in using</div>
                 <SocialButtons />

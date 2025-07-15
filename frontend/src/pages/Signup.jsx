@@ -43,6 +43,7 @@ function Signup()
             } else {
                 console.log("Signup successful:", data);
                 setError(null);
+                navigate('/dashboard');
             }
         } catch (e) {
             console.error("Unexpected error:", e.message);
@@ -93,7 +94,9 @@ function Signup()
                             onChange={ handleChange }
                         />
                         <TermsNotice checked={ form.agree } onChange={ handleChange } />
-                        <FormButton label="Sign Up" />                    
+                        <FormButton label="Sign Up" />
+                        {error && <p className="text-red-500 text-center">{error}</p>}
+                        {success && <p className="text-green-500 text-center">{success}</p>}                
                     </form>
                     <div className="mt-4 text-center text-gray-500">or sign up with</div>
                     <SocialButtons />
