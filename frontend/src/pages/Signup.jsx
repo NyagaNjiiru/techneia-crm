@@ -4,10 +4,12 @@ import TermsNotice from '../components/TermsNotice';
 import FormButton from '../components/FormButton';
 import SocialButtons from '../components/SocialButtons';
 import logo from '../assets/techneia.png';
+import { supabase } from '../utils/supabaseClient';
 
 function Signup()
 {
     const [form, setForm] = useState({ name: "", email: "", password: "", agree: false });
+    const [error, setError] = useState(null);
 
     const handleChange = (e) =>
     {
@@ -15,11 +17,37 @@ function Signup()
         setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
     };
 
-    const handleSignup = (e) =>
+    const handleSignup = async (e) =>
     {
         e.preventDefault();
-        console.log("Signing up with:", form);
-        // call backend here
+        if (!form.agree)
+        {
+            setError("You must agree to the terms and conditions.");
+            return;
+        }
+
+        try {
+            const { data, error } = await supabase.auth.signUp({
+                email: form.email,
+                password: form.password,
+                options: {
+                    data: {
+                        name: form.name
+                    }
+                }
+            });
+
+            if (error) {
+                console.error("Signup error:", error);
+                setError(error.message);
+            } else {
+                console.log("Signup successful:", data);
+                setError(null);
+            }
+        } catch (e) {
+            console.error("Unexpected error:", e.message);
+            setError("Unexpected error occurred");
+        }
     };
 
     return (

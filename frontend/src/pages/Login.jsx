@@ -1,23 +1,44 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import InputField from '../components/InputField';
 import FormButton from '../components/FormButton';
 import SocialButtons from '../components/SocialButtons';
 import logo from '../assets/techneia.png';
+import { supabase } from '../utils/supabaseClient';
 
 function Login()
 {
     const [form, setForm] = useState({ email: "", password: "" });
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const handleChange = (e) =>
     {
+        const { name, value } = e.target;
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const handleLogin = (e) =>
+    const handleLogin = async (e) =>
     {
         e.preventDefault();
-        console.log("Logging in with:", form);
-        // call backend here
+        try {
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: form.email,
+                password: form.password
+            });
+
+            if (error) {
+                console.error('Supabase login error:', error);
+                setError(error.message);
+            } else {
+                console.log('Login successful:', data);
+                setError(null);
+                navigate('/dashboard');
+            }
+        } catch (e) {
+            console.error("Unexpected error:", e.message);
+            setError("Unexpected error occurred");
+        }
     };
 
     return (
