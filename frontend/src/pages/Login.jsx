@@ -10,6 +10,7 @@ function Login()
 {
     const [form, setForm] = useState({ email: "", password: "" });
     const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
     const navigate = useNavigate();
 
     const handleChange = (e) =>
