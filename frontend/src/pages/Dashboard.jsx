@@ -24,6 +24,11 @@ function Dashboard() {
     getUser();
   }, [navigate]);
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate('/login');
+  };
+
   const sampleData = [
     { name: 'Mon', leads: 5, tasks: 3 },
     { name: 'Tue', leads: 8, tasks: 4 },
@@ -36,7 +41,7 @@ function Dashboard() {
     <div className="flex min-h-screen bg-gray-50 text-black font-['Roboto']">
       <Sidebar />
       <div className="flex-1 flex flex-col">
-        <NavBar />
+        <NavBar user={user} onLogout={handleLogout} />
 
         <div className="p-6 space-y-6">
           {/* Cards */}

@@ -10,6 +10,7 @@ function Signup()
 {
     const [form, setForm] = useState({ name: "", email: "", password: "", agree: false });
     const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
 
     const handleChange = (e) =>
     {
